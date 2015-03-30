@@ -6,7 +6,7 @@ import (
 
 func TestTrie(t *testing.T) {
 	keyset := NewKeyset()
-	keyset.Push_back("hello", 5)
+	keyset.Push_back("hello", int64(5))
 
 	trie := NewTrie()
 	trie.Build(keyset)

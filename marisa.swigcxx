@@ -1,15 +1,14 @@
 %module marisa
 
-//%include <typemaps.i>
-//%include <stl.i>
+%include <typemaps.i>
+%include <stl.i>
 
 %{
-//#include <stdexcept>
 #include "marisa_swig.h"
 %}
 
-//%include <exception.i>
-/*
+%include <exception.i>
+
 %exception {
   try {
     $action
@@ -19,6 +18,6 @@
     SWIG_exception(SWIG_UnknownError,"Unknown exception");
   }
 }
-*/
+
 
 %include "marisa_swig.h"
