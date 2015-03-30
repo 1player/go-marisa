@@ -1,0 +1,24 @@
+%module marisa
+
+//%include <typemaps.i>
+//%include <stl.i>
+
+%{
+//#include <stdexcept>
+#include "marisa_swig.h"
+%}
+
+//%include <exception.i>
+/*
+%exception {
+  try {
+    $action
+  } catch (const marisa::Exception &ex) {
+    SWIG_exception(SWIG_RuntimeError, ex.what());
+  } catch (...) {
+    SWIG_exception(SWIG_UnknownError,"Unknown exception");
+  }
+}
+*/
+
+%include "marisa_swig.h"
