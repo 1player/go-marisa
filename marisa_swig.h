@@ -48,7 +48,7 @@ enum NodeOrder {
 
 class Key {
  public:
-  void str(const char **ptr_out, std::size_t *length_out) const;
+  std::string str();
   std::size_t id() const;
   float weight() const;
 
@@ -80,20 +80,20 @@ class Keyset {
   Keyset();
   ~Keyset();
 
-  void push_back(const marisa::Key &key);
-  void push_back(const char *ptr, std::size_t length, float weight = 1.0);
+  void pushBack(const marisa::Key &key);
+  void pushBack(const char *ptr, std::size_t length, float weight = 1.0);
 
   const Key &key(std::size_t i) const;
 
-  void key_str(std::size_t i,
+  void keyStr(std::size_t i,
       const char **ptr_out, std::size_t *length_out) const;
-  std::size_t key_id(std::size_t i) const;
+  std::size_t keyId(std::size_t i) const;
 
-  std::size_t num_keys() const;
+  std::size_t numKeys() const;
 
   bool empty() const;
   std::size_t size() const;
-  std::size_t total_length() const;
+  std::size_t totalLength() const;
 
   void reset();
   void clear();
@@ -112,17 +112,17 @@ class Agent {
   Agent();
   ~Agent();
 
-  void set_query(const char *ptr, std::size_t length);
-  void set_query(std::size_t id);
+  void setQuery(const char *ptr, std::size_t length);
+  void setQuery(std::size_t id);
 
   const Key &key() const;
   const Query &query() const;
 
-  void key_str(const char **ptr_out, std::size_t *length_out) const;
-  std::size_t key_id() const;
+  void keyStr(const char **ptr_out, std::size_t *length_out) const;
+  std::size_t keyId() const;
 
-  void query_str(const char **ptr_out, std::size_t *length_out) const;
-  std::size_t query_id() const;
+  void queryStr(const char **ptr_out, std::size_t *length_out) const;
+  std::size_t queryId() const;
 
  private:
   marisa::Agent *agent_;
@@ -145,25 +145,25 @@ class Trie {
   void save(const char *filename) const;
 
   bool lookup(Agent &agent) const;
-  void reverse_lookup(Agent &agent) const;
-  bool common_prefix_search(Agent &agent) const;
-  bool predictive_search(Agent &agent) const;
+  void reverseLookup(Agent &agent) const;
+  bool commonPrefixSearch(Agent &agent) const;
+  bool predictiveSearch(Agent &agent) const;
 
   std::size_t lookup(const char *ptr, std::size_t length) const;
-  void reverse_lookup(std::size_t id,
+  void reverseLookup(std::size_t id,
       const char **ptr_out_to_be_deleted, std::size_t *length_out) const;
 
-  std::size_t num_tries() const;
-  std::size_t num_keys() const;
-  std::size_t num_nodes() const;
+  std::size_t numTries() const;
+  std::size_t numKeys() const;
+  std::size_t numNodes() const;
 
-  TailMode tail_mode() const;
-  NodeOrder node_order() const;
+  TailMode tailNode() const;
+  NodeOrder nodeOrder() const;
 
   bool empty() const;
   std::size_t size() const;
-  std::size_t total_size() const;
-  std::size_t io_size() const;
+  std::size_t totalSize() const;
+  std::size_t ioSize() const;
 
   void clear();
 

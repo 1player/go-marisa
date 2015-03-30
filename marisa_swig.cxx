@@ -1,13 +1,14 @@
 #include <cstring>
+#include <string>
 #include <new>
 
 #include "marisa_swig.h"
 
 namespace marisa_swig {
 
-void Key::str(const char **ptr_out, size_t *length_out) const {
-  *ptr_out = key_.ptr();
-  *length_out = key_.length();
+std::string Key::str() {
+  std::string keyS(key_.ptr(), key_.length());
+  return keyS;
 }
 
 size_t Key::id() const {
@@ -35,11 +36,11 @@ Keyset::~Keyset() {
   delete keyset_;
 }
 
-void Keyset::push_back(const marisa::Key &key) {
+void Keyset::pushBack(const marisa::Key &key) {
   keyset_->push_back(key);
 }
 
-void Keyset::push_back(const char *ptr, size_t length, float weight) {
+void Keyset::pushBack(const char *ptr, size_t length, float weight) {
   keyset_->push_back(ptr, length, weight);
 }
 
@@ -47,17 +48,17 @@ const Key &Keyset::key(size_t i) const {
   return reinterpret_cast<const Key &>((*keyset_)[i]);
 }
 
-void Keyset::key_str(size_t i,
+void Keyset::keyStr(size_t i,
     const char **ptr_out, size_t *length_out) const {
   *ptr_out = (*keyset_)[i].ptr();
   *length_out = (*keyset_)[i].length();
 }
 
-size_t Keyset::key_id(size_t i) const {
+size_t Keyset::keyId(size_t i) const {
   return (*keyset_)[i].id();
 }
 
-size_t Keyset::num_keys() const {
+size_t Keyset::numKeys() const {
   return keyset_->num_keys();
 }
 
@@ -69,7 +70,7 @@ size_t Keyset::size() const {
   return keyset_->size();
 }
 
-size_t Keyset::total_length() const {
+size_t Keyset::totalLength() const {
   return keyset_->total_length();
 }
 
@@ -91,7 +92,7 @@ Agent::~Agent() {
   delete [] buf_;
 }
 
-void Agent::set_query(const char *ptr, size_t length) {
+void Agent::setQuery(const char *ptr, size_t length) {
   if (length > buf_size_) {
     size_t new_buf_size = (buf_size_ != 0) ? buf_size_ : 1;
     if (length >= (MARISA_SIZE_MAX / 2)) {
@@ -111,7 +112,7 @@ void Agent::set_query(const char *ptr, size_t length) {
   agent_->set_query(buf_, length);
 }
 
-void Agent::set_query(size_t id) {
+void Agent::setQuery(size_t id) {
   agent_->set_query(id);
 }
 
@@ -123,21 +124,21 @@ const Query &Agent::query() const {
   return reinterpret_cast<const Query &>(agent_->query());
 }
 
-void Agent::key_str(const char **ptr_out, size_t *length_out) const {
+void Agent::keyStr(const char **ptr_out, size_t *length_out) const {
   *ptr_out = agent_->key().ptr();
   *length_out = agent_->key().length();
 }
 
-size_t Agent::key_id() const {
+size_t Agent::keyId() const {
   return agent_->key().id();
 }
 
-void Agent::query_str(const char **ptr_out, size_t *length_out) const {
+void Agent::queryStr(const char **ptr_out, size_t *length_out) const {
   *ptr_out = agent_->query().ptr();
   *length_out = agent_->query().length();
 }
 
-size_t Agent::query_id() const {
+size_t Agent::queryId() const {
   return agent_->query().id();
 }
 
@@ -169,15 +170,15 @@ bool Trie::lookup(Agent &agent) const {
   return trie_->lookup(*agent.agent_);
 }
 
-void Trie::reverse_lookup(Agent &agent) const {
+void Trie::reverseLookup(Agent &agent) const {
   trie_->reverse_lookup(*agent.agent_);
 }
 
-bool Trie::common_prefix_search(Agent &agent) const {
+bool Trie::commonPrefixSearch(Agent &agent) const {
   return trie_->common_prefix_search(*agent.agent_);
 }
 
-bool Trie::predictive_search(Agent &agent) const {
+bool Trie::predictiveSearch(Agent &agent) const {
   return trie_->predictive_search(*agent.agent_);
 }
 
@@ -190,7 +191,7 @@ size_t Trie::lookup(const char *ptr, size_t length) const {
   return agent.key().id();
 }
 
-void Trie::reverse_lookup(size_t id,
+void Trie::reverseLookup(size_t id,
     const char **ptr_out_to_be_deleted, size_t *length_out) const {
   marisa::Agent agent;
   agent.set_query(id);
@@ -202,19 +203,19 @@ void Trie::reverse_lookup(size_t id,
   *length_out = agent.key().length();
 }
 
-size_t Trie::num_tries() const {
+size_t Trie::numTries() const {
   return trie_->num_tries();
 }
 
-size_t Trie::num_keys() const {
+size_t Trie::numKeys() const {
   return trie_->num_keys();
 }
 
-size_t Trie::num_nodes() const {
+size_t Trie::numNodes() const {
   return trie_->num_nodes();
 }
 
-TailMode Trie::tail_mode() const {
+TailMode Trie::tailNode() const {
   if (trie_->tail_mode() == ::MARISA_TEXT_TAIL) {
     return TEXT_TAIL;
   } else {
@@ -222,7 +223,7 @@ TailMode Trie::tail_mode() const {
   }
 }
 
-NodeOrder Trie::node_order() const {
+NodeOrder Trie::nodeOrder() const {
   if (trie_->node_order() == ::MARISA_LABEL_ORDER) {
     return LABEL_ORDER;
   } else {
@@ -238,11 +239,11 @@ size_t Trie::size() const {
   return trie_->size();
 }
 
-size_t Trie::total_size() const {
+size_t Trie::totalSize() const {
   return trie_->total_size();
 }
 
-size_t Trie::io_size() const {
+size_t Trie::ioSize() const {
   return trie_->io_size();
 }
 
