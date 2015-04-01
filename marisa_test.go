@@ -1,6 +1,26 @@
 package marisa
 
-import "testing"
+import (
+	"sort"
+	"testing"
+)
+
+func compareStringSlices(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+
+	sort.Strings(a)
+	sort.Strings(b)
+
+	for i := 0; i < len(a); i++ {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+
+	return true
+}
 
 func TestCommonPrefixSearch(t *testing.T) {
 	keyset := NewKeyset()
@@ -38,5 +58,39 @@ func TestCommonPrefixSearch(t *testing.T) {
 
 	if i != len(tests) {
 		t.Errorf("Got %d prefixes, expected %d\n", i, len(tests))
+	}
+}
+
+func TestPredictiveSearch(t *testing.T) {
+	keyset := NewKeyset()
+	keyset.PushBackString("foo")
+	keyset.PushBackString("foobar")
+	keyset.PushBackString("foobaz")
+	keyset.PushBackString("abcdef")
+
+	trie := NewTrie()
+	trie.Build(keyset)
+
+	tests := []struct {
+		query   string
+		results []string
+	}{
+		{"fo", []string{"foo", "foobar", "foobaz"}},
+		{"abcd", []string{"abcdef"}},
+		{"123", []string{}},
+	}
+
+	for _, test := range tests {
+		agent := NewAgent()
+		agent.SetQueryString(test.query)
+
+		var found []string
+		for trie.PredictiveSearch(agent) {
+			found = append(found, agent.Key().Str())
+		}
+
+		if !compareStringSlices(found, test.results) {
+			t.Errorf("Trie.PredictiveSearch(%q), expected %v, got %v\n", test.query, test.results, found)
+		}
 	}
 }
