@@ -3,6 +3,7 @@
 %include <typemaps.i>
 %include <stl.i>
 %include <std_string.i>
+%include <exception.i>
 
 %{
 #include "marisa_swig.h"
@@ -10,15 +11,14 @@
 
 %apply (char *STRING, size_t LENGTH) { (const char *ptr, size_t length) };
 
-%include <exception.i>
 
 %exception {
   try {
-    $action
+    $action;
   } catch (const marisa::Exception &ex) {
-    SWIG_exception(SWIG_RuntimeError, ex.what());
+    _swig_gopanic(ex.what());
   } catch (...) {
-    SWIG_exception(SWIG_UnknownError,"Unknown exception");
+    _swig_gopanic("Unknown exception");
   }
 }
 
