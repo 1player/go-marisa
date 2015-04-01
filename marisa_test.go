@@ -78,6 +78,7 @@ func TestPredictiveSearch(t *testing.T) {
 		{"fo", []string{"foo", "foobar", "foobaz"}},
 		{"abcd", []string{"abcdef"}},
 		{"123", []string{}},
+		{"", []string{"abcdef", "foo", "foobar", "foobaz"}},
 	}
 
 	for _, test := range tests {
