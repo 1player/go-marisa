@@ -4,9 +4,9 @@ import "testing"
 
 func TestCommonPrefixSearch(t *testing.T) {
 	keyset := NewKeyset()
-	keyset.PushStringWithWeight("a", 2)
-	keyset.PushString("app")
-	keyset.PushString("apple")
+	keyset.PushBackStringWithWeight("a", 2)
+	keyset.PushBackString("app")
+	keyset.PushBackString("apple")
 
 	trie := NewTrie()
 	trie.Build(keyset)

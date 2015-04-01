@@ -182,27 +182,6 @@ bool Trie::predictiveSearch(Agent &agent) const {
   return trie_->predictive_search(*agent.agent_);
 }
 
-size_t Trie::lookup(const char *ptr, size_t length) const {
-  marisa::Agent agent;
-  agent.set_query(ptr, length);
-  if (!trie_->lookup(agent)) {
-    return MARISA_INVALID_KEY_ID;
-  }
-  return agent.key().id();
-}
-
-void Trie::reverseLookup(size_t id,
-    const char **ptr_out_to_be_deleted, size_t *length_out) const {
-  marisa::Agent agent;
-  agent.set_query(id);
-  trie_->reverse_lookup(agent);
-  char * const buf = new (std::nothrow) char[agent.key().length()];
-  MARISA_THROW_IF(buf == NULL, MARISA_MEMORY_ERROR);
-  std::memcpy(buf, agent.key().ptr(), agent.key().length());
-  *ptr_out_to_be_deleted = buf;
-  *length_out = agent.key().length();
-}
-
 size_t Trie::numTries() const {
   return trie_->num_tries();
 }

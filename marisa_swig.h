@@ -81,7 +81,7 @@ class Keyset {
   ~Keyset();
 
   void pushBack(const marisa::Key &key);
-  void pushBack(const char *ptr, std::size_t length, float weight = 1.0);
+  void pushBack(const char *ptr, size_t length, float weight = 1.0);
 
   const Key &key(std::size_t i) const;
 
@@ -112,7 +112,7 @@ class Agent {
   Agent();
   ~Agent();
 
-  void setQuery(const char *ptr, std::size_t length);
+  void setQuery(const char *ptr, size_t length);
   void setQuery(std::size_t id);
 
   const Key &key() const;
@@ -148,10 +148,6 @@ class Trie {
   void reverseLookup(Agent &agent) const;
   bool commonPrefixSearch(Agent &agent) const;
   bool predictiveSearch(Agent &agent) const;
-
-  std::size_t lookup(const char *ptr, std::size_t length) const;
-  void reverseLookup(std::size_t id,
-      const char **ptr_out_to_be_deleted, std::size_t *length_out) const;
 
   std::size_t numTries() const;
   std::size_t numKeys() const;

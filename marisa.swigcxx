@@ -4,10 +4,11 @@
 %include <stl.i>
 %include <std_string.i>
 
-
 %{
 #include "marisa_swig.h"
 %}
+
+%apply (char *STRING, size_t LENGTH) { (const char *ptr, size_t length) };
 
 %include <exception.i>
 
@@ -21,47 +22,10 @@
   }
 }
 
-%rename(Wrapped_Keyset) Keyset;
-%rename(Wrapped_Agent) Agent;
+%rename(pushBackStringWithWeight) marisa_swig::Keyset::pushBack(const char *, size_t, float);
+%rename(pushBackString) marisa_swig::Keyset::pushBack(const char *, size_t);
+
+%rename(setQueryId) marisa_swig::Agent::setQuery(size_t);
+%rename(setQueryString) marisa_swig::Agent::setQuery(const char *, size_t);
 
 %include "marisa_swig.h"
-
-%insert(go_wrapper) %{
-    type Agent interface {
-        Wrapped_Agent
-        SetQueryString(key string)
-        SetQueryId(id int64)
-    }
-
-    func NewAgent() Agent {
-        return _swig_wrap_new_Wrapped_Agent()
-    }
-
-    func (a SwigcptrWrapped_Agent) SetQueryString(key string) {
-        a.SetQuery__SWIG_0(key, int64(len(key)))
-    }
-
-    func (a SwigcptrWrapped_Agent) SetQueryId(id int64) {
-        a.SetQuery__SWIG_1(id)
-    }  
-
-
-    type Keyset interface {
-        Wrapped_Keyset
-        PushString(key string)
-        PushStringWithWeight(key string, weight float32)
-    }
-
-    func NewKeyset() Keyset {
-        return _swig_wrap_new_Wrapped_Keyset()
-    }
-
-    func (e SwigcptrWrapped_Keyset) PushString(key string) {
-        e.PushBack__SWIG_2(key, int64(len(key)))
-    }
-
-    func (e SwigcptrWrapped_Keyset) PushStringWithWeight(key string, weight float32) {
-        e.PushBack__SWIG_1(key, int64(len(key)), weight)
-    }
-%}
-
